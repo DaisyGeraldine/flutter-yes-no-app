@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:maybeapp/domain/entities/message.dart';
+import 'package:maybeapp/presentation/providers/chat_provider.dart';
 import 'package:maybeapp/presentation/widgets/chat/her_message_bubble.dart';
 import 'package:maybeapp/presentation/widgets/chat/my_message_bubble.dart';
 import 'package:maybeapp/presentation/widgets/shared/message_field_box.dart';
+import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
   const ChatScreen({super.key});
@@ -10,16 +13,16 @@ class ChatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold( 
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
           child: CircleAvatar(
             backgroundImage: NetworkImage('https://picsum.photos/200'),
           ),
         ),
-        title: const Text('Yes No App'),
+        title: const Text('Mi adorable Sam'),
         centerTitle: false,
       ),
-      body: _ChatView(),
+      body: const _ChatView(),
     );
   }
 }
@@ -31,6 +34,7 @@ class _ChatView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final chatProvider = context.watch<ChatProvider>();
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -38,16 +42,25 @@ class _ChatView extends StatelessWidget {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: 100,
+                controller: chatProvider.chatScrollController,
+                itemCount: chatProvider.messages.length,
                 itemBuilder: (context, index) {
-                  return index % 2 == 0
-                      ? const MyMessageBubble()
-                      : const HerMessageBubble();
+                  final message = chatProvider.messages[index];
+                  print('message: ' + index.toString());
+                  return message.fromWho == FromWho.me
+                    ? MyMessageBubble(
+                        message: message
+                    )
+                    : HerMessageBubble(
+                        message: message,
+                    );
                 },
               ),
             ),
             // Box Text
-            MessageFieldBox(),
+            MessageFieldBox(
+              onValue: chatProvider.senMessage,
+            ),
           ],
         ),
       ),
