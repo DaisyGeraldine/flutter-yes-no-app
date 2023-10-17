@@ -17,11 +17,10 @@ class ChatProvider extends ChangeNotifier {
     if (text.isEmpty) return;
     messages.add(Message(text: text, fromWho: FromWho.me));
 
-    print('text: ' + text);
+    print('text: ' + text.endsWith('?').toString());
     //herReply();
 
-    if (text.endsWith('?')) {
-      await Future.delayed(const Duration(milliseconds: 500));
+    if (text.trim().endsWith('?')) {
       herReply();
     }
     notifyListeners();

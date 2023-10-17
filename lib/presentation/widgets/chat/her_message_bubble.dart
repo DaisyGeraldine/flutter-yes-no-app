@@ -29,20 +29,27 @@ class HerMessageBubble extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 5),
-        _ImageBubble()
+        _ImageBubble(
+          image: message.imageUrl!,
+        ),
       ],
     );
   }
 }
 
 class _ImageBubble extends StatelessWidget {
+  const _ImageBubble({
+    super.key, 
+    required this.image
+  });
+  final String image;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return ClipRRect(
       borderRadius: BorderRadius.circular(20),
-      child: Image.network('https://picsum.photos/200',
+      child: Image.network(image,
         width: size.width * 0.6,
         height: 150,
         fit: BoxFit.cover,

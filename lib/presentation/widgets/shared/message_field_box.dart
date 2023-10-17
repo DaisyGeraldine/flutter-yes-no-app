@@ -19,7 +19,7 @@ class MessageFieldBox extends StatelessWidget {
       focusNode: focusNode,
       controller: textController,
       decoration: InputDecoration(
-        hintText: 'Escribe un mensaje',
+        hintText: 'Escribe un mensaje que termine en \'?\'',
         enabledBorder: outlineInputBorder,
         focusedBorder: outlineInputBorder,
         contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
